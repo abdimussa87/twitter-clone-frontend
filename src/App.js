@@ -8,12 +8,12 @@ import Login from './components/Login/Login';
 import Home from './components/Home/Home';
 import Signup from './components/Signup/Signup';
 import { isUserLoggedIn } from './features/auth/authSlice';
+import Search from './components/Search/Search';
 
 function App() {
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth)
   useEffect(() => {
-
 
     if (!auth.authenticated) {
       dispatch(isUserLoggedIn());
@@ -24,11 +24,13 @@ function App() {
   return (
     <div className="app">
       <Router>
+
         <Switch>
           <PublicRoute path='/signin' child={Login} />
 
           <PublicRoute path='/signup' child={Signup} />
 
+          <PrivateRoute path='/search' child={Search} />
           <PrivateRoute path='/' child={Home} />
 
         </Switch>

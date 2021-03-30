@@ -41,7 +41,7 @@ function Signup(props) {
                     <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder='Confirm password' required />
                     <Button type='submit' onClick={(e) => signup(e)}>Signup</Button>
                 </form>
-                <p onClick={() => props.history.push('/login')}>Already have an account? Login here</p>
+                <p onClick={() => props.history.push('/signin')}>Already have an account? Login here</p>
             </div>
         </div>
     )

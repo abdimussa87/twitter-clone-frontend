@@ -1,0 +1,41 @@
+.post {
+  display: flex;
+  border-bottom: 1px solid lightgray;
+  padding: var(--spacing);
+  cursor: pointer;
+}
+.post__right {
+  display: flex;
+  flex-direction: column;
+  padding-left: var(--spacing);
+}
+
+.post a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+.post > a:hover {
+  text-decoration: underline !important;
+}
+
+.post__right__username,
+.post__right__createdAt {
+  color: var(--grayText);
+  padding: 0 5px;
+}
+
+.post__right__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--grayButtonText);
+}
+.post__right__footer > .MuiSvgIcon-root {
+  padding: 5px;
+}
+.post__right__footer > .MuiSvgIcon-root:hover {
+  background-color: #d4edff;
+  color: var(--blue);
+  border-radius: 50%;
+}

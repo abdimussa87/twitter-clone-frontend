@@ -1,0 +1,29 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  /* height: 100vh; */
+}
+
+.sidebar > a {
+  text-decoration: none;
+  color: #212529;
+  padding: 10px;
+}
+
+.sidebar > a > .MuiSvgIcon-root {
+  font-size: 30px;
+}
+.sidebar__bird {
+  color: var(--blue) !important;
+}
+
+.sidebar > a:hover {
+  background-color: #d4edff;
+  border-radius: 50%;
+  color: var(--blue);
+}
+
+.active {
+  color: var(--blue);
+}
