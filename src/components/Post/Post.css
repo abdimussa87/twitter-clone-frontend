@@ -6,6 +6,7 @@
 }
 .post__right {
   display: flex;
+  flex: 1;
   flex-direction: column;
   padding-left: var(--spacing);
 }
@@ -23,6 +24,7 @@
 .post__right__createdAt {
   color: var(--grayText);
   padding: 0 5px;
+  font-size: small;
 }
 
 .post__right__footer {
@@ -31,11 +33,26 @@
   align-items: center;
   color: var(--grayButtonText);
 }
-.post__right__footer > .MuiSvgIcon-root {
+.post__right__footer .MuiSvgIcon-root {
   padding: 5px;
 }
-.post__right__footer > .MuiSvgIcon-root:hover {
+
+.post__right__commentBtn:hover {
   background-color: #d4edff;
   color: var(--blue);
   border-radius: 50%;
+}
+.post__right__retweetBtn:hover {
+  background-color: var(--greenLight);
+  color: var(--green);
+  border-radius: 50%;
+}
+.post__right__likeBtn:hover {
+  background-color: var(--pinkLight);
+  color: var(--pink);
+  border-radius: 50%;
+}
+
+.post__right__like {
+  padding: 0 10px;
 }

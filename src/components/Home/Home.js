@@ -13,8 +13,8 @@ function Home() {
     //    const [posts, setposts] = useState([])
     const dispatch = useDispatch()
     const handleAddPostClick = () => {
-        console.log('clicked')
         dispatch(createPostAsync({ postMessage }))
+        setpostMessage('')
     }
 
     useEffect(() => {
@@ -23,11 +23,11 @@ function Home() {
 
     return (
         <Grid container>
-            <Grid item xs={2}>
+            <Grid item xs={2} sm={2} md={2} lg={2}>
                 <Sidebar active='home' />
             </Grid>
 
-            <Grid className='home' item sm={8} md={8} lg={8} xs={10}>
+            <Grid className='home' item sm={10} md={7} lg={6} xs={10}>
                 <div className="home__header">
                     <h4 >Home</h4>
                 </div>
@@ -37,18 +37,24 @@ function Home() {
                     <div className="home__createPostContainer__right">
                         <textarea value={postMessage} onChange={(e) => setpostMessage(e.target.value)} placeholder="What's happening?" />
 
-                        <button disabled={postMessage.trim().length > 0 ? false : true} onClick={handleAddPostClick}>Post</button>
+                        <button disabled={postMessage.trim().length > 0 ? false : true} onClick={handleAddPostClick} style={{ cursor: postMessage.trim().length > 0 ? 'pointer' : 'inherit' }}>Tweet</button>
                     </div>
                 </div>
 
                 <div className="home__posts">
-                    {post.posts.map((post, index) => <Post key={index} post={post} />)}
+                    {post.posts.length === 0 ?
+                        <center className='home__posts__nothingToShow'>Nothing to show</center>
+                        :
+                        post.posts.map(post => <Post key={post._id} post={post} />)
+                    }
+
+
                 </div>
             </Grid>
 
-            <Hidden xsDown>
-                <Grid className='home__right' item sm >
-
+            <Hidden smDown>
+                <Grid className='home__right' item md={3} lg={4} >
+                    hi
                 </Grid>
             </Hidden>
         </Grid>

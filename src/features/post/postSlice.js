@@ -7,7 +7,6 @@ export const createPostAsync = createAsyncThunk('post/createPostAsync', async ({
         const response = await axios.post('/posts', { content: postMessage });
         if (response.status === 201) {
             const { createdPost } = response.data;
-
             return { createdPost }
         }
     } catch (error) {
@@ -28,6 +27,18 @@ export const getPostsAsync = createAsyncThunk('post/getPostsAsync', async ({ rej
         return rejectWithValue(error.response.data)
     }
 })
+export const likeUnlikePostAsync = createAsyncThunk('post/likeUnlikePostAsync', async ({ postId, isLiked }, { rejectWithValue }) => {
+    const url = isLiked ? `/posts/${postId}/unlike` : `/posts/${postId}/like`
+    try {
+        const response = await axios.put(url);
+        if (response.status === 204) {
+            return
+        }
+    } catch (error) {
+        return rejectWithValue(error.response.data)
+    }
+})
+
 export const postSlice = createSlice({
     name: 'auth',
     initialState: {
@@ -42,9 +53,11 @@ export const postSlice = createSlice({
 
         [createPostAsync.pending]: (state, action) => {
             state.loading = true;
-        }, [createPostAsync.fulfilled]: (state, action) => {
+        },
+        [createPostAsync.fulfilled]: (state, action) => {
             state.loading = false;
             state.posts = [{ ...action.payload.createdPost }, ...state.posts];
+            // state.posts.unshift({ ...action.payload.createdPost })
             state.error = null;
         },
         [createPostAsync.rejected]: (state, action) => {
@@ -53,12 +66,24 @@ export const postSlice = createSlice({
         },
         [getPostsAsync.pending]: (state, action) => {
             state.loading = true;
-        }, [getPostsAsync.fulfilled]: (state, action) => {
+        },
+        [getPostsAsync.fulfilled]: (state, action) => {
             state.loading = false;
             state.posts = action.payload.posts;
             state.error = null;
         },
         [getPostsAsync.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        [likeUnlikePostAsync.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [likeUnlikePostAsync.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.error = null;
+        },
+        [likeUnlikePostAsync.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },

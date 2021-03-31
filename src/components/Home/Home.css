@@ -32,10 +32,11 @@
   resize: none;
   margin-left: var(--spacing);
   outline-width: 0;
+  outline: none;
   border: none;
 }
 .home__createPostContainer__right > button {
-  width: 50px;
+  width: 70px;
   height: 30px;
   font-size: 14px;
   cursor: pointer;
@@ -49,6 +50,11 @@
 }
 .home__createPostContainer__right > button:disabled {
   background-color: var(--blueLight);
+}
+
+.home__posts__nothingToShow {
+  margin-top: 20%;
+  color: lightgray;
 }
 
 .home__right {
