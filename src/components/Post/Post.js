@@ -7,55 +7,69 @@ import RepeatIcon from '@material-ui/icons/Repeat';
 import ChatBubbleOutlineRoundedIcon from '@material-ui/icons/ChatBubbleOutlineRounded';
 import './Post.css'
 import { useDispatch } from 'react-redux';
-import { likeUnlikePostAsync } from '../../features/post/postSlice';
+import { likeUnlikePostAsync, retweetPostAsync, unRetweetPostAsync } from '../../features/post/postSlice';
 
 function Post({ post }) {
-    const { content, pinned, postedBy, createdAt, _id } = post;
-    const [isLiked, setisLiked] = useState(post.isLiked)
-    const [likes, setlikes] = useState(post.likes.length)
+    const { content, pinned, createdAt, postedBy, _id } = post.retweetData ? post.retweetData : post;
+    const retweetedBy = post.retweetData ? post.postedBy : null;
+    const [isLiked, setIsLiked] = useState(post.isLiked)
+    const [likes, setLikes] = useState(post.likes.length)
+    const [isRetweeted, setIsRetweeted] = useState(post.isRetweeted)
+    const [retweets, setRetweets] = useState(post.retweetUsers.length)
     const { firstName, lastName, username, profilePic } = postedBy
     const timestamp = timeDifference(new Date(), new Date(createdAt))
     const dispatch = useDispatch()
     const handleLikeClick = () => {
         dispatch(likeUnlikePostAsync({ postId: _id, isLiked }))
-        isLiked ? setlikes(likes - 1) : setlikes(likes + 1)
-        setisLiked(!isLiked)
+        isLiked ? setLikes(likes - 1) : setLikes(likes + 1)
+        setIsLiked(!isLiked)
+    }
+    const handleRetweetClick = () => {
+        isRetweeted ? dispatch(unRetweetPostAsync({ postId: _id })) : dispatch(retweetPostAsync({ postId: _id }));
+        isRetweeted ? setRetweets(retweets - 1) : setRetweets(retweets + 1);
+        setIsRetweeted(!isRetweeted);
     }
 
     return (
         <div className='post'>
-            <Avatar src={`http://localhost:8080/${profilePic}`} />
-            <div className="post__right">
-                {pinned && <h6>Pinned Post</h6>}
-                <span>
-                    <Link to={`/profile/${postedBy.username}`}>
-                        {`${firstName} ${lastName} `}
-                    </Link>
-                    <span className='post__right__username'>{`@${username} `}</span>
-                    <span className='post__right__createdAt'>{timestamp}</span>
-                </span>
-                <p>{content}</p>
-                <div className="post__right__footer">
-                    <span className='post__right__comment'>
-                        <ChatBubbleOutlineRoundedIcon className='post__right__commentBtn' />
+            {retweetedBy && <span className='post__retweetedBy'>                            <RepeatIcon /> Retweeted by <a href={`/profile/${retweetedBy.username}`}> @{retweetedBy.username}</a> </span>}
+            <div className="post__mainContainer">
+                <Avatar src={`http://localhost:8080/${profilePic}`} />
+                <div className="post__right">
+                    {pinned && <h6>Pinned Post</h6>}
+                    <span>
+                        <Link to={`/profile/${postedBy.username}`}>
+                            {`${firstName} ${lastName} `}
+                        </Link>
+                        <span className='post__right__username'>{`@${username} `}</span>
+                        <span className='post__right__createdAt'>{timestamp}</span>
+                    </span>
+                    <p>{content}</p>
+                    <div className="post__right__footer">
+                        <span className='post__right__comment'>
+                            <ChatBubbleOutlineRoundedIcon className='post__right__commentBtn' />
 
-                    </span>
-                    <span className='post__right__retweet'>
-                        <RepeatIcon className='post__right__retweetBtn' />
-
-                    </span>
-                    <span style={{ color: isLiked ? 'red' : 'inherit', display: 'flex', alignItems: 'center' }
-                    } className='post__right__like'>
-                        {isLiked ?
-                            <FavoriteIcon className='post__right__likeBtn' onClick={handleLikeClick} /> :
-                            <FavoriteBorderIcon className='post__right__likeBtn' onClick={handleLikeClick} />
-                        }
-                        <p style={{
-                            visibility: likes > 0 ? 'inherit' : 'hidden'
-                        }}>{likes}</p>
-                    </span>
+                        </span>
+                        <span style={{ color: isRetweeted ? '#23c26b' : 'inherit', display: 'flex', alignItems: 'center' }} className='post__right__retweet'>
+                            <RepeatIcon className='post__right__retweetBtn' onClick={handleRetweetClick} />
+                            <p style={{
+                                visibility: retweets > 0 ? 'inherit' : 'hidden'
+                            }}>{retweets}</p>
+                        </span>
+                        <span style={{ color: isLiked ? 'red' : 'inherit', display: 'flex', alignItems: 'center' }
+                        } className='post__right__like'>
+                            {isLiked ?
+                                <FavoriteIcon className='post__right__likeBtn' onClick={handleLikeClick} /> :
+                                <FavoriteBorderIcon className='post__right__likeBtn' onClick={handleLikeClick} />
+                            }
+                            <p style={{
+                                visibility: likes > 0 ? 'inherit' : 'hidden'
+                            }}>{likes}</p>
+                        </span>
+                    </div>
                 </div>
             </div>
+
         </div>
     )
 }

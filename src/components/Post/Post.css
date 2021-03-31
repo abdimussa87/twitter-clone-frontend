@@ -1,5 +1,24 @@
 .post {
   display: flex;
+  flex-direction: column;
+}
+.post__retweetedBy {
+  display: flex;
+  align-items: center;
+  margin-bottom: -10px;
+  padding-left: 35px;
+  padding-top: 10px;
+  font-size: 13px;
+  color: var(--grayText);
+}
+.post__retweetedBy > .MuiSvgIcon-root {
+  font-size: 14px;
+}
+.post__retweetedBy > a {
+  font-weight: normal !important;
+}
+.post__mainContainer {
+  display: flex;
   border-bottom: 1px solid lightgray;
   padding: var(--spacing);
   cursor: pointer;
@@ -16,8 +35,9 @@
   color: black;
   font-weight: bold;
 }
-.post > a:hover {
-  text-decoration: underline !important;
+
+.post a:hover {
+  text-decoration: underline;
 }
 
 .post__right__username,

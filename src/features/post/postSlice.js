@@ -38,6 +38,30 @@ export const likeUnlikePostAsync = createAsyncThunk('post/likeUnlikePostAsync', 
         return rejectWithValue(error.response.data)
     }
 })
+export const unRetweetPostAsync = createAsyncThunk('post/unRetweetPostAsync', async ({ postId }, { rejectWithValue }) => {
+    const url = `/posts/${postId}/unretweet`
+    try {
+        const response = await axios.delete(url);
+        if (response.status === 200) {
+            const { deletedRetweet } = response.data;
+            return { deletedRetweet }
+        }
+    } catch (error) {
+        return rejectWithValue(error.response.data)
+    }
+})
+export const retweetPostAsync = createAsyncThunk('post/retweetPostAsync', async ({ postId }, { rejectWithValue }) => {
+    const url = `/posts/${postId}/retweet`
+    try {
+        const response = await axios.post(url);
+        if (response.status === 201) {
+            const { retweetPost } = response.data;
+            return { retweetPost }
+        }
+    } catch (error) {
+        return rejectWithValue(error.response.data)
+    }
+})
 
 export const postSlice = createSlice({
     name: 'auth',
@@ -84,6 +108,30 @@ export const postSlice = createSlice({
             state.error = null;
         },
         [likeUnlikePostAsync.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        [unRetweetPostAsync.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [unRetweetPostAsync.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.posts = state.posts.filter(post => post._id !== action.payload.deletedRetweet._id)
+            state.error = null;
+        },
+        [unRetweetPostAsync.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        [retweetPostAsync.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [retweetPostAsync.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.posts = [{ ...action.payload.retweetPost }, ...state.posts];
+            state.error = null;
+        },
+        [retweetPostAsync.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
