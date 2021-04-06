@@ -2,9 +2,10 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from '../../axios'
 
 // 
-export const createPostAsync = createAsyncThunk('post/createPostAsync', async ({ postMessage }, { rejectWithValue }) => {
+export const createPostAsync = createAsyncThunk('post/createPostAsync', async ({ postMessage, replyTo }, { rejectWithValue }) => {
+    const post = { content: postMessage, replyTo }
     try {
-        const response = await axios.post('/posts', { content: postMessage });
+        const response = await axios.post('/posts', post);
         if (response.status === 201) {
             const { createdPost } = response.data;
             return { createdPost }
@@ -116,7 +117,7 @@ export const postSlice = createSlice({
         },
         [unRetweetPostAsync.fulfilled]: (state, action) => {
             state.loading = false;
-            state.posts = state.posts.filter(post => post._id !== action.payload.deletedRetweet._id)
+            // state.posts = state.posts.filter(post => post._id !== action.payload.deletedRetweet._id)
             state.error = null;
         },
         [unRetweetPostAsync.rejected]: (state, action) => {
@@ -128,7 +129,7 @@ export const postSlice = createSlice({
         },
         [retweetPostAsync.fulfilled]: (state, action) => {
             state.loading = false;
-            state.posts = [{ ...action.payload.retweetPost }, ...state.posts];
+            // state.posts = [{ ...action.payload.retweetPost }, ...state.posts];
             state.error = null;
         },
         [retweetPostAsync.rejected]: (state, action) => {

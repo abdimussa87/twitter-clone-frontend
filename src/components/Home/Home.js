@@ -6,20 +6,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createPostAsync, getPostsAsync } from '../../features/post/postSlice';
 import Post from '../Post/Post';
 
+
 function Home() {
     const user = useSelector(state => state.auth.user)
     const [postMessage, setpostMessage] = useState('');
     const post = useSelector(state => state.post)
-    //    const [posts, setposts] = useState([])
     const dispatch = useDispatch()
+    //    const [posts, setposts] = useState([])    
     const handleAddPostClick = () => {
         dispatch(createPostAsync({ postMessage }))
         setpostMessage('')
     }
 
+
     useEffect(() => {
         dispatch(getPostsAsync({}))
     }, [dispatch])
+
+
 
     return (
         <Grid container>
