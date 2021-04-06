@@ -110,13 +110,11 @@
 .reply__button:disabled {
   background-color: var(--blueLight) !important;
 }
-.noBorderBottom {
-  border-bottom: none;
-}
 
-.replyToContainer {
-  display: flex;
-  border-bottom: 1px solid lightgray;
-  padding: var(--spacing);
-  cursor: pointer;
+.post__replyTo {
+  margin-bottom: 5px;
+  font-size: small;
+}
+.post__replyTo a {
+  color: var(--blue);
 }
