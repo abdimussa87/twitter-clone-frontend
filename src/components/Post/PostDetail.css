@@ -1,0 +1,17 @@
+.postDetail {
+  border-left: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+  height: 100vh;
+}
+.postDetail__header {
+  padding: 5px var(--spacing);
+  border-bottom: 1px solid lightgray;
+}
+.postDetail__header > h4 {
+  font-size: 20px;
+  font-weight: normal;
+}
+
+.postDetail__replies {
+  padding: 0 var(--spacing);
+}

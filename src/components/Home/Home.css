@@ -3,7 +3,7 @@
   border-right: 1px solid lightgray;
 }
 .home__header {
-  padding: 0 var(--spacing);
+  padding: 5px var(--spacing);
   border-bottom: 1px solid lightgray;
 }
 .home__header > h4 {

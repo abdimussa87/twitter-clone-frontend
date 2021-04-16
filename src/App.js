@@ -9,6 +9,7 @@ import Home from './components/Home/Home';
 import Signup from './components/Signup/Signup';
 import { isUserLoggedIn } from './features/auth/authSlice';
 import Search from './components/Search/Search';
+import PostDetail from './components/Post/PostDetail';
 
 function App() {
   const dispatch = useDispatch();
@@ -31,6 +32,8 @@ function App() {
           <PublicRoute path='/signup' child={Signup} />
 
           <PrivateRoute path='/search' child={Search} />
+          <PrivateRoute path='/post/:id' child={PostDetail} />
+
           <PrivateRoute path='/' child={Home} />
 
         </Switch>

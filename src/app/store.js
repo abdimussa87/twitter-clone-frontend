@@ -9,3 +9,4 @@ export default configureStore({
     post: postReducer
   },
 });
+

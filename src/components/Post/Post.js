@@ -14,6 +14,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import jwt_decode from "jwt-decode";
+import { useHistory } from 'react-router';
+
 
 function Post({ post }) {
     let userId = useRef(getUserId());
@@ -24,6 +26,7 @@ function Post({ post }) {
     const [likes, setLikes] = useState(post.likes.length)
     const [isRetweeted, setIsRetweeted] = useState(post.retweetUsers.includes(userId.current))
     const [retweets, setRetweets] = useState(post.retweetUsers.length)
+    const history = useHistory()
 
     const { firstName, lastName, username, profilePic } = postedBy
     const timestamp = timeDifference(new Date(), new Date(createdAt))
@@ -33,6 +36,15 @@ function Post({ post }) {
     const textAreaRef = useRef(null);
 
 
+    const handlePostClick = () => {
+        if (replyTo) {
+            history.push(`/post/${post.replyTo._id}`)
+
+        } else {
+
+            history.push(`/post/${post._id}`)
+        }
+    }
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -123,11 +135,11 @@ function Post({ post }) {
 
 
     return (
-        <div className='post'>
+        <div className='post' >
             {retweetedBy && <span className='post__retweetedBy'>                            <RepeatIcon /> Retweeted by &nbsp; <a href={`/profile/${retweetedBy.username}`}> @{retweetedBy.username}</a> </span>}
-            <div className="post__mainContainer">
+            <div className="post__mainContainer" >
                 <Avatar src={`http://localhost:8080/${profilePic}`} />
-                <div className="post__right">
+                <div className="post__right"  >
                     {pinned && <h6>Pinned Post</h6>}
                     <span>
                         <Link to={`/profile/${postedBy.username}`}>
@@ -137,7 +149,7 @@ function Post({ post }) {
                         <span className='post__right__createdAt'>{timestamp}</span>
                     </span>
                     {replyTo && <span className='post__replyTo'>                            Replying to <a href={`/profile/${post.replyTo.postedBy.username}`}> @{post.replyTo.postedBy.username}</a> </span>}
-                    <p>{content}</p>
+                    <p onClick={handlePostClick}>{content}</p>
                     <div className="post__right__footer">
                         <span className='post__right__comment'>
                             <ChatBubbleOutlineRoundedIcon className='post__right__commentBtn' onClick={handleClickOpen} />

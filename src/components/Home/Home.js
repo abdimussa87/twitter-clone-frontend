@@ -19,8 +19,10 @@ function Home() {
     }
 
 
+
+
     useEffect(() => {
-        dispatch(getPostsAsync({}))
+        dispatch(getPostsAsync())
     }, [dispatch])
 
 
