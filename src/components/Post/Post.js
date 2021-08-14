@@ -24,6 +24,7 @@ import jwt_decode from "jwt-decode";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useHistory } from "react-router";
 import { unwrapResult } from "@reduxjs/toolkit";
+import { getUserAsync } from "../../features/user/userSlice";
 
 function Post({ post }) {
   let userId = useRef(getUserId());
@@ -72,6 +73,7 @@ function Post({ post }) {
   const handleDeletePostClick = () => {
     dispatch(deletePostAsync({ postId: _id })).then(unwrapResult).then(result => {
       dispatch(getPostsAsync());
+      dispatch(getUserAsync({username:userId.current,hasReply:replyTo==null?false:true}))
       setOpenDeleteDialog(false);
     });
   };

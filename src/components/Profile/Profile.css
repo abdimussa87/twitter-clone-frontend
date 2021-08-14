@@ -1,0 +1,101 @@
+.profile >h5{
+    padding: 10px;
+}
+.profile__header{
+    height: 180px;
+    background-color: var(--blue);
+    position: relative;
+}
+.profile__headerImage{
+    width: 132px;
+    height: 132px;
+    border-radius: 999px;
+    position: absolute;
+    bottom: -66px;
+    margin-left: var(--spacing);
+    border:4px solid white
+}
+.profile__buttonsContainer{
+    text-align: end;
+    padding: var(--spacing);
+    min-height: 35px;
+}
+.profile__headerButton{
+    display: inline-block;
+    color:var(--blue);
+    font-weight: bold;
+    padding:5px 15px;
+    border:1px solid var(--blue);
+    border-radius: 60px;
+    margin-left: var(--spacing);
+}
+.profile__headerButton>.MuiSvgIcon-root{
+    font-size: large;
+}
+.profile__headerButton:hover{
+    background-color: var(--blueBackground);
+    cursor: pointer;
+}
+.following{
+    background-color: var(--blue);
+    color:white;
+}
+.following:hover{
+    color: black;
+}
+.profile__detailsContainer{
+    margin-left: var(--spacing);
+}
+.profile__name{
+    font-weight: bold;
+}
+.profile__username{
+    color: gray;
+}
+.followersContainer  a{
+    text-decoration: none ;
+    color:black;
+}
+.followersContainer  a:hover{
+    border-bottom: 1px solid black;
+}
+.profile__followCount{
+    font-weight: bold;
+    margin-right: 5px;
+}
+.followersContainer span:not(.profile__followCount){
+    color:var(--grayText);
+    margin-right: 15px;
+}
+.profile__bodyTabs{
+    display: flex;
+    margin-top: 10px;
+   height:52px;
+    justify-content: space-around;
+    border-bottom: 1px solid lightgray;
+}
+.profile__bodyTabs a{
+    font-weight: bold;
+    text-decoration: none;
+    color:var(--grayText);
+}
+.profile__bodyTabs div{
+    flex:1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.profile__bodyTabs div:hover {
+    background-color: var(--blueBackground);
+    cursor: pointer;
+}
+.profile__bodyTabs div:hover a{
+    color:var(--blue);
+}
+
+.profile__bodyTabs .active{
+    border-bottom: 2px solid var(--blue);
+}
+.active > a{
+    color:var(--blue);
+}

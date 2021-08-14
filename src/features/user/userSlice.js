@@ -4,13 +4,13 @@ import axios from "../../axios";
 //creating thunk
 export const getUserAsync = createAsyncThunk(
   "user/getUserAsync",
-  async ({ username }, { rejectWithValue }) => {
+  async ({ username,hasReply }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/users/${username}`);
+      const response = await axios.get(`/users/${username}?hasReply=${hasReply}`);
       if (response.status === 200) {
-        const { user} = response.data;
+        const { user,posts} = response.data;
         
-        return { user };
+        return { user,posts };
       }
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -48,6 +48,7 @@ export const userSlice = createSlice({
   name: "user",
   initialState: {
     user: null,
+    posts:[],
     loading: false,
     error: null,
     message: null,
@@ -60,6 +61,7 @@ export const userSlice = createSlice({
     [getUserAsync.fulfilled]: (state, action) => {
       state.loading = false;
       state.user = action.payload.user;
+      state.posts =action.payload.posts;
       state.error = null;
     },
     [getUserAsync.rejected]: (state, action) => {
