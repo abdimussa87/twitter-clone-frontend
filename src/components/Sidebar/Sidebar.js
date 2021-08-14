@@ -7,11 +7,12 @@ import EmailIcon from '@material-ui/icons/Email';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import TwitterIcon from '@material-ui/icons/Twitter';
-import { useDispatch } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 import { logout } from '../../features/auth/authSlice'
 import { Link } from 'react-router-dom';
 function Sidebar({ active }) {
     const dispatch = useDispatch()
+    const username = useSelector(state=>state.auth.user.username);
     const signout = (e) => {
         e.preventDefault()
         dispatch(logout())
@@ -23,7 +24,7 @@ function Sidebar({ active }) {
             <Link to="/search">< SearchIcon className={active === 'search' ? 'active' : ''} /></Link>
             <Link to="/notifications"> <NotificationsIcon /></Link>
             <Link to="/messages"><EmailIcon /></Link>
-            <Link to="/profile"><AccountCircleIcon /></Link>
+            <Link to={`/profile/${username}`}><AccountCircleIcon className={active === 'profile' ? 'active' : ''}/></Link>
             <Link to="/signin" onClick={(e) => signout(e)}><ExitToAppIcon /></Link>
         </div>
     )

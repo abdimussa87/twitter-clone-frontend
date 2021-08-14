@@ -86,6 +86,18 @@ export const retweetPostAsync = createAsyncThunk('post/retweetPostAsync', async 
     }
 })
 
+export const deletePostAsync = createAsyncThunk('post/deletePostAsync', async ({ postId }, { rejectWithValue }) => {
+    
+    try {
+        const response = await axios.delete(`/posts/${postId}`);
+        if (response.status === 204) {
+            return;
+        }
+    } catch (error) {
+        return rejectWithValue(error.response.data)
+    }
+})
+
 export const postSlice = createSlice({
     name: 'post',
     initialState: {
@@ -182,6 +194,19 @@ export const postSlice = createSlice({
             state.error = null;
         },
         [retweetPostAsync.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        [deletePostAsync.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [deletePostAsync.fulfilled]: (state, action) => {
+            state.loading = false;
+            // state.posts = state.posts.filter(post => post._id !== action.payload.deletedRetweet._id)
+            state.error = null;
+        },
+        [deletePostAsync.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },

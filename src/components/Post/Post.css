@@ -29,6 +29,11 @@
   flex-direction: column;
   padding-left: var(--spacing);
 }
+.post__right > span{
+  display: flex;
+  align-items: center;
+
+}
 
 .post a,
 .reply a {
@@ -47,6 +52,9 @@
   color: var(--grayText);
   padding: 0 5px;
   font-size: small;
+}
+.post__right__createdAt{
+  flex:1;
 }
 
 .post__right__footer {
@@ -118,3 +126,19 @@
 .post__replyTo a {
   color: var(--blue);
 }
+.deletePost__button {
+  background-color: var(--pink) !important;
+  color: white !important;
+}
+.deletePost__topContainer {
+  display: flex;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+  padding: var(--spacing) 0;
+}
+.deletePostpost__right{
+  padding:0 var(--spacing) ;
+
+}
+
+

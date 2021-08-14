@@ -13,6 +13,7 @@ export const loginAsync = createAsyncThunk('auth/loginAsync', async ({ usernameO
       localStorage.setItem('user', JSON.stringify(user));
       return { user, token };
     }
+  
   } catch (error) {
     return rejectWithValue(error.response.data)
   }
