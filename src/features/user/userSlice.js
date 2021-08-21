@@ -17,6 +17,20 @@ export const getUserAsync = createAsyncThunk(
     }
   }
 );
+export const searchForUserAsync = createAsyncThunk(
+  "user/getUsersAsync",
+  async ({ searchTerm }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`/users?searchTerm=${searchTerm}`);
+      if (response.status === 200) {
+        const { users} = response.data;
+        return { users};
+      }
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 // export const signupAsync = createAsyncThunk(
 //   "auth/signupAsync",
@@ -48,12 +62,18 @@ export const userSlice = createSlice({
   name: "user",
   initialState: {
     user: null,
+    users:[],
     posts:[],
     loading: false,
     error: null,
     message: null,
   },
-  reducers: {},
+  reducers: {
+    setUsersToEmtpy: (state) => {
+      state.users = [];
+      state.error=null;
+    },
+  },
   extraReducers: {
     [getUserAsync.pending]: (state, action) => {
       state.loading = true;
@@ -65,6 +85,18 @@ export const userSlice = createSlice({
       state.error = null;
     },
     [getUserAsync.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [searchForUserAsync.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [searchForUserAsync.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.users = action.payload.users;
+      state.error = null;
+    },
+    [searchForUserAsync.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -85,5 +117,6 @@ export const userSlice = createSlice({
   },
 });
 
+export const { setUsersToEmtpy } = userSlice.actions;
 
 export default userSlice.reducer;

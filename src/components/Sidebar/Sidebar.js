@@ -23,7 +23,7 @@ function Sidebar({ active }) {
             <Link to="/"> <HomeIcon className={active === 'home' ? 'active' : ''} /></Link>
             <Link to="/search">< SearchIcon className={active === 'search' ? 'active' : ''} /></Link>
             <Link to="/notifications"> <NotificationsIcon /></Link>
-            <Link to="/messages"><EmailIcon /></Link>
+            <Link to="/messages"><EmailIcon  className={active === 'messages' ? 'active' : ''}/></Link>
             <Link to={`/profile/${username}`}><AccountCircleIcon className={active === 'profile' ? 'active' : ''}/></Link>
             <Link to="/signin" onClick={(e) => signout(e)}><ExitToAppIcon /></Link>
         </div>

@@ -11,6 +11,8 @@ import { isUserLoggedIn } from './features/auth/authSlice';
 import Search from './components/Search/Search';
 import PostDetail from './components/Post/PostDetail';
 import Profile from './components/Profile/Profile';
+import Messages from './components/messages/Messages';
+import NewMessage from './components/newMessage/NewMessage';
 
 function App() {
   const dispatch = useDispatch();
@@ -36,6 +38,8 @@ function App() {
           <PrivateRoute path='/post/:id' child={PostDetail} />
           {/* <PrivateRoute path='/profile/:id' child={Profile} /> */}
           <PrivateRoute path='/profile/:username' child={Profile} />
+          <PrivateRoute path='/messages/new' child={NewMessage} />
+          <PrivateRoute path='/messages' child={Messages} />
 
           <PrivateRoute path='/' child={Home} />
 
