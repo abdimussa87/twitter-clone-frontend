@@ -1,7 +1,9 @@
 import { Avatar, Grid, Hidden } from "@material-ui/core";
+import { unwrapResult } from "@reduxjs/toolkit";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { createChatAsync } from "../../features/message/messageSlice";
 import {
   searchForUserAsync,
   setUsersToEmtpy,
@@ -17,9 +19,14 @@ function NewMessage() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const auth = useSelector((state) => state.auth);
+  const history =useHistory();
 
   const handleCreateChatClick = () => {
-    // dispatch(createPostAsync({ postMessage }))
+    dispatch(createChatAsync({ users:selectedUsers })).then(unwrapResult).then(result => {
+      history.push(`/messages/${result.data._id}`);
+    }).catch(err=>{
+      console.log(err)
+    });
     setNameOfReciever("");
   };
 
@@ -53,6 +60,7 @@ function NewMessage() {
   useEffect(() => {
     dispatch(setUsersToEmtpy());
   }, [dispatch]);
+
 
   return (
     <div>
@@ -119,7 +127,7 @@ function NewMessage() {
               onClick={handleCreateChatClick}
               style={{
                 cursor:
-                  nameOfReciever.trim().length > 0 ? "pointer" : "inherit",
+                  selectedUsers.length > 0 ? "pointer" : "inherit",
               }}
             >
               Create chat

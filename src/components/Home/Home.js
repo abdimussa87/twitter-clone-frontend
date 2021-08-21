@@ -18,14 +18,9 @@ function Home() {
         setpostMessage('')
     }
 
-
-
-
     useEffect(() => {
         dispatch(getPostsAsync())
     }, [dispatch])
-
-
 
     return (
         <Grid container>
