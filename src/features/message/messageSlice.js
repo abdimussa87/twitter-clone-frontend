@@ -38,7 +38,7 @@ export const createChatAsync = createAsyncThunk(
       const response = await axios.post("/chats", {
         users,
       });
-      if (response.status === 201 || response.status===200) {
+      if (response.status === 201 || response.status === 200) {
         const { data } = response.data;
         return { data };
       }
@@ -50,7 +50,7 @@ export const createChatAsync = createAsyncThunk(
 
 export const updateChatAsync = createAsyncThunk(
   "message/updateChatAsync",
-  async ({ id,chatName }, { rejectWithValue }) => {
+  async ({ id, chatName }, { rejectWithValue }) => {
     try {
       const response = await axios.put(`/chats/${id}`, {
         chatName,
@@ -67,10 +67,11 @@ export const updateChatAsync = createAsyncThunk(
 
 export const createMessageAsync = createAsyncThunk(
   "message/createMessageAsync",
-  async ({ content,chatId }, { rejectWithValue }) => {
+  async ({ content, chatId }, { rejectWithValue }) => {
     try {
       const response = await axios.post("/messages", {
-        content,chatId
+        content,
+        chatId,
       });
       if (response.status === 201) {
         const { data } = response.data;
@@ -81,13 +82,28 @@ export const createMessageAsync = createAsyncThunk(
     }
   }
 );
+
+export const getChatMessagesAsync = createAsyncThunk(
+  "message/getChatMessagesAsync",
+  async ({ chatId }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`/chatMessages/${chatId}`);
+      if (response.status === 200) {
+        const { messages } = response.data;
+        return { messages };
+      }
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 export const messageSlice = createSlice({
   name: "message",
   initialState: {
-    messages: [],
-    chats:[],
+    messages: [], // the meaning between these
+    chats: [], // two has been interchanged
     chat: null,
-    newCreatedMessage: {},// the meaning between these
+    newCreatedMessage: {}, // the meaning between these
     newCreatedChat: {}, // two has been interchanged
     loading: false,
     error: null,
@@ -150,9 +166,23 @@ export const messageSlice = createSlice({
     [createMessageAsync.fulfilled]: (state, action) => {
       state.loading = false;
       state.newCreatedChat = action.payload.data;
+      state.chats = [...state.chats, { ...action.payload.data }];
       state.error = null;
     },
     [createMessageAsync.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    [getChatMessagesAsync.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [getChatMessagesAsync.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.chats = action.payload.messages;
+      state.error = null;
+    },
+    [getChatMessagesAsync.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

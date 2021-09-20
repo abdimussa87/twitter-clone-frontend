@@ -11,14 +11,17 @@ import React, { useRef, useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SendIcon from "@material-ui/icons/Send";
+import { Scrollbars } from 'react-custom-scrollbars';
 import {
   createMessageAsync,
   getChatAsync,
+  getChatMessagesAsync,
   updateChatAsync,
 } from "../../features/message/messageSlice";
 import Sidebar from "../Sidebar/Sidebar";
 import "./Chat.css";
 import jwt_decode from "jwt-decode";
+import Message from "./Message";
 
 function Chat(props) {
   const id = props.match.params.id;
@@ -26,6 +29,7 @@ function Chat(props) {
   let userId = useRef(getUserId());
   const dispatch = useDispatch();
   const chat = useSelector((state) => state.message.chat);
+  const messages = useSelector(state=>state.message.chats);
   const maxImagesToShow = 3;
   let remainingUsers = chat?.users?.length - maxImagesToShow ?? 0;
   remainingUsers -= 1; // removing our own image
@@ -39,6 +43,8 @@ function Chat(props) {
   console.log(chatName);
   useEffect(() => {
     dispatch(getChatAsync({ id }));
+    dispatch(getChatMessagesAsync({ chatId:id }));
+
   }, [dispatch, id]);
 
   useEffect(() => {
@@ -166,7 +172,9 @@ function Chat(props) {
           </span>
         </div>
         <div className="chat__body">
-          <h5>hi</h5>
+        <Scrollbars >
+          {messages && messages.map(message=><Message key = {message._id}message={message} />)}
+          </Scrollbars>
         </div>
         <div className="chat__bottom">
           <textarea
