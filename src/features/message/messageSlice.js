@@ -38,7 +38,7 @@ export const createChatAsync = createAsyncThunk(
       const response = await axios.post("/chats", {
         users,
       });
-      if (response.status === 201) {
+      if (response.status === 201 || response.status===200) {
         const { data } = response.data;
         return { data };
       }
@@ -48,12 +48,47 @@ export const createChatAsync = createAsyncThunk(
   }
 );
 
+export const updateChatAsync = createAsyncThunk(
+  "message/updateChatAsync",
+  async ({ id,chatName }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`/chats/${id}`, {
+        chatName,
+      });
+      if (response.status === 200) {
+        const { chat } = response.data;
+        return { chat };
+      }
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const createMessageAsync = createAsyncThunk(
+  "message/createMessageAsync",
+  async ({ content,chatId }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("/messages", {
+        content,chatId
+      });
+      if (response.status === 201) {
+        const { data } = response.data;
+        return { data };
+      }
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 export const messageSlice = createSlice({
   name: "message",
   initialState: {
     messages: [],
+    chats:[],
     chat: null,
-    newCreatedMessage: [],
+    newCreatedMessage: {},// the meaning between these
+    newCreatedChat: {}, // two has been interchanged
     loading: false,
     error: null,
     message: null,
@@ -94,6 +129,30 @@ export const messageSlice = createSlice({
       state.error = null;
     },
     [getChatAsync.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [updateChatAsync.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [updateChatAsync.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.chat = action.payload.chat;
+      state.error = null;
+    },
+    [updateChatAsync.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [createMessageAsync.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [createMessageAsync.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.newCreatedChat = action.payload.data;
+      state.error = null;
+    },
+    [createMessageAsync.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

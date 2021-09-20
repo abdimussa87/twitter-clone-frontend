@@ -84,3 +84,13 @@
 .chat__sendButton {
   color: var(--blue);
 }
+
+.editChat__body{
+  display: flex;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+  padding: var(--spacing) 0;
+}
+.editChat__body>input{
+  width: 100%;
+}

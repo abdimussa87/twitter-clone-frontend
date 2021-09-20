@@ -129,6 +129,7 @@
 .deletePost__button {
   background-color: var(--pink) !important;
   color: white !important;
+  height: 30px;
 }
 .deletePost__topContainer {
   display: flex;
