@@ -3,12 +3,27 @@ import axios from "../../axios";
 
 export const getChatsAsync = createAsyncThunk(
   "message/getChatsAsync",
-  async (_,{ rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(`/chats`);
       if (response.status === 200) {
         const { chats } = response.data;
         return { chats };
+      }
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getChatAsync = createAsyncThunk(
+  "message/getChatAsync",
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`/chats/${id}`);
+      if (response.status === 200) {
+        const { chat } = response.data;
+        return { chat };
       }
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -37,6 +52,7 @@ export const messageSlice = createSlice({
   name: "message",
   initialState: {
     messages: [],
+    chat: null,
     newCreatedMessage: [],
     loading: false,
     error: null,
@@ -65,6 +81,19 @@ export const messageSlice = createSlice({
       state.error = null;
     },
     [getChatsAsync.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    [getChatAsync.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [getChatAsync.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.chat = action.payload.chat;
+      state.error = null;
+    },
+    [getChatAsync.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

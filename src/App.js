@@ -13,6 +13,7 @@ import PostDetail from './components/Post/PostDetail';
 import Profile from './components/Profile/Profile';
 import Messages from './components/messages/Messages';
 import NewMessage from './components/newMessage/NewMessage';
+import Chat from './components/chat/Chat';
 
 function App() {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ function App() {
           {/* <PrivateRoute path='/profile/:id' child={Profile} /> */}
           <PrivateRoute path='/profile/:username' child={Profile} />
           <PrivateRoute path='/messages/new' child={NewMessage} />
+          <PrivateRoute path='/messages/:id' child={Chat} />
           <PrivateRoute path='/messages' child={Messages} />
 
           <PrivateRoute path='/' child={Home} />

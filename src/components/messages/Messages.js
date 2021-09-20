@@ -49,9 +49,9 @@ function Messages() {
 
         <div className="messages__body">
           {chats.map((chat) => (
-            <Link to={`/messages/${chat._id}`}>
+            <Link key={chat._id} to={`/messages/${chat._id}`}>
               
-              <div key={chat._id} className="message_container">
+              <div  className="message_container">
                 <div className= { getOtherChatUsers(chat.users).length > 1?" message__imagesContainer messages__groupChatImageContainer":"message__imagesContainer"}>
 
                   <img alt='User profile'

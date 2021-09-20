@@ -10,3 +10,12 @@
   --pink: #e12f66;
   --spacing: 15px;
 }
+
+#root{
+  height: 100%;
+
+}
+.app{
+  height: 100%;
+
+}

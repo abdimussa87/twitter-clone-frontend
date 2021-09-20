@@ -1,6 +1,6 @@
-.home {
+
+.home__right{
   border-left: 1px solid lightgray;
-  border-right: 1px solid lightgray;
 }
 .home__header {
   padding: 5px var(--spacing);
