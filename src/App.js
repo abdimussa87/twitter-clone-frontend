@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import './App.css';
@@ -14,17 +14,22 @@ import Profile from './components/Profile/Profile';
 import Messages from './components/messages/Messages';
 import NewMessage from './components/newMessage/NewMessage';
 import Chat from './components/chat/Chat';
+import { WebSocketContext }  from './features/socket/webSocket';
 
 function App() {
+
   const dispatch = useDispatch();
+  const ws = useContext(WebSocketContext);
   const auth = useSelector(state => state.auth)
   useEffect(() => {
 
     if (!auth.authenticated) {
       dispatch(isUserLoggedIn());
+    }else{
+     ws.setupSocket(auth.user);
     }
 
-  }, [dispatch, auth])
+  }, [dispatch, auth,ws])
 
   return (
     <div className="app">

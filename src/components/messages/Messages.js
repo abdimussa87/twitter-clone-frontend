@@ -1,4 +1,4 @@
-import {  Grid, Hidden, IconButton } from "@material-ui/core";
+import { Grid, Hidden, IconButton } from "@material-ui/core";
 import React, { useEffect } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import AddCommentOutlinedIcon from "@material-ui/icons/AddCommentOutlined";
@@ -28,6 +28,14 @@ function Messages() {
     let otherChatUsers = getOtherChatUsers(chat.users);
     return otherChatUsers[0];
   };
+  const getLatestMessage = (chat) => {
+    if (chat.latestMessage) {
+      let sender = chat.latestMessage.sender;
+      return `${sender.firstName} ${sender.lastName}: ${chat.latestMessage.content}`
+    }
+
+    return "New chat";
+  };
   useEffect(() => {
     dispatch(getChatsAsync());
   }, [dispatch]);
@@ -50,17 +58,23 @@ function Messages() {
         <div className="messages__body">
           {chats.map((chat) => (
             <Link key={chat._id} to={`/messages/${chat._id}`}>
-              
-              <div  className="message_container">
-                <div className= { getOtherChatUsers(chat.users).length > 1?" message__imagesContainer messages__groupChatImageContainer":"message__imagesContainer"}>
-
-                  <img alt='User profile'
+              <div className="message_container">
+                <div
+                  className={
+                    getOtherChatUsers(chat.users).length > 1
+                      ? " message__imagesContainer messages__groupChatImageContainer"
+                      : "message__imagesContainer"
+                  }
+                >
+                  <img
+                    alt="User profile"
                     src={`http://localhost:8080/${
                       getChatImage(chat).profilePic
                     }`}
                   />
                   {getOtherChatUsers(chat.users).length > 1 && (
-                    <img alt='User profile'
+                    <img
+                      alt="User profile"
                       src={`http://localhost:8080/${
                         getOtherChatUsers(chat.users)[1].profilePic
                       }`}
@@ -68,10 +82,11 @@ function Messages() {
                   )}
                 </div>
                 <div className="messages__content ellipsis">
-                  <h5 className="messages__chatName ellipsis">{getChatName(chat)}</h5>
+                  <h5 className="messages__chatName ellipsis">
+                    {getChatName(chat)}
+                  </h5>
                   <p className="messages__lastChat ellipsis">
-                    <span>Liam Payne:</span>
-                    <span>True</span>
+                    <span>{getLatestMessage(chat)}</span>
                   </p>
                 </div>
               </div>

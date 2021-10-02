@@ -1,7 +1,10 @@
 .message {
-  margin: 15px 0;
-  padding-right: 30px;
-
+  margin: 2px 0;
+  padding-right: 9px;
+}
+.message__outerContainer {
+  display: flex;
+  align-items: center;
 }
 .message__container {
   background-color: #f1f0f0;
@@ -17,4 +20,50 @@
   background-color: var(--blue);
   color: white;
   margin-left: auto;
+}
+
+.last{
+  margin-bottom: 8px;
+}
+
+.mine.first {
+  border-bottom-right-radius: 2px;
+}
+
+.mine:not(.first):not(.last) {
+  border-bottom-right-radius: 2px;
+  border-top-right-radius: 2px;
+}
+
+.mine.last:not(.first) {
+  border-top-right-radius: 2px;
+}
+
+.their:not(.last) {
+  margin-left: 31px;
+}
+
+.their.first {
+  border-bottom-left-radius: 2px;
+}
+
+.their:not(.first):not(.last) {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+
+.their.last:not(.first) {
+  border-top-left-radius: 2px;
+}
+.message__senderName {
+  color: rgba(0, 0, 0, 0.4);
+  padding-bottom: 2px;
+  margin-left: 28px;
+  display: block;
+}
+.message__senderImage {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: 7px;
 }

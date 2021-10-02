@@ -108,8 +108,16 @@ export const messageSlice = createSlice({
     loading: false,
     error: null,
     message: null,
+    isTyping:false,
   },
-  reducers: {},
+  reducers: {
+    displayTypingIndicator :(state)=>{
+      state.isTyping = true
+    },
+    hideTypingIndicator :(state)=>{
+      state.isTyping = false
+    },
+  },
   extraReducers: {
     [createChatAsync.pending]: (state, action) => {
       state.loading = true;
@@ -188,5 +196,6 @@ export const messageSlice = createSlice({
     },
   },
 });
+export const { displayTypingIndicator,hideTypingIndicator } = messageSlice.actions;
 
 export default messageSlice.reducer;

@@ -7,11 +7,11 @@ import {
   Grid,
   Hidden,
 } from "@material-ui/core";
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SendIcon from "@material-ui/icons/Send";
-import { Scrollbars } from 'react-custom-scrollbars';
+import { Scrollbars } from "react-custom-scrollbars";
 import {
   createMessageAsync,
   getChatAsync,
@@ -22,35 +22,44 @@ import Sidebar from "../Sidebar/Sidebar";
 import "./Chat.css";
 import jwt_decode from "jwt-decode";
 import Message from "./Message";
+import { WebSocketContext } from "../../features/socket/webSocket";
 
 function Chat(props) {
   const id = props.match.params.id;
-
+  const ws = useContext(WebSocketContext);
   let userId = useRef(getUserId());
   const dispatch = useDispatch();
   const chat = useSelector((state) => state.message.chat);
-  const messages = useSelector(state=>state.message.chats);
+  const isLoading = useSelector((state) => state.message.loading);
+  const isTyping = useSelector((state) => state.message.isTyping);
+  const messages = useSelector((state) => state.message.chats);
   const maxImagesToShow = 3;
   let remainingUsers = chat?.users?.length - maxImagesToShow ?? 0;
   remainingUsers -= 1; // removing our own image
-
+  let currentUserTyping = false;
+  let timer;
   const [openChangeChatNameDialog, setOpenChangeChatNameDialog] =
     useState(false);
   const [chatName, setChatName] = useState(chat?.chatName ?? "");
   const [message, setMessage] = useState("");
-  console.log("ui building");
-  console.log(chat?.chatName);
-  console.log(chatName);
+  const scrollBar = useRef(null);
+
+  const scrollToBottom = () => {
+    scrollBar.current?.scrollToBottom();
+  };
   useEffect(() => {
     dispatch(getChatAsync({ id }));
-    dispatch(getChatMessagesAsync({ chatId:id }));
-
-  }, [dispatch, id]);
+    dispatch(getChatMessagesAsync({ chatId: id }));
+    ws.joinRoom(id);
+  }, [dispatch, id, ws]);
 
   useEffect(() => {
     setChatName(chat?.chatName ?? "");
   }, [chat?.chatName]);
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
   const createChatParticipantsImages = (user) => {
     return (
       <img
@@ -73,18 +82,28 @@ function Chat(props) {
 
     return namesArray.join(", ");
   };
-
+  const updateTyping = () => {
+    clearTimeout(timer);
+    if (!currentUserTyping) {
+      ws.typing(id);
+      currentUserTyping = true;
+    }
+    timer = setTimeout(() => {
+      console.log('set timeout called')
+      ws.stopTyping(id);
+      currentUserTyping = false;
+    }, 3000);
+  };
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (message.trim().length > 0) {
-      console.log("working");
-      dispatch(createMessageAsync({content:message,chatId:chat._id}))
-      setMessage('');
+      dispatch(createMessageAsync({ content: message, chatId: chat._id }));
+      setMessage("");
     }
   };
 
   const handleOnKeyDown = (e) => {
-    if(e.which===13 &&!e.shiftKey){
+    if (e.which === 13 && !e.shiftKey) {
       handleSendMessage(e);
     }
   };
@@ -172,16 +191,54 @@ function Chat(props) {
           </span>
         </div>
         <div className="chat__body">
-        <Scrollbars >
-          {messages && messages.map(message=><Message key = {message._id}message={message} />)}
-          </Scrollbars>
+          {isLoading ? (
+            <div className="loadingSpinnerContainer">
+              <img
+                className="loadingSpinner"
+                src="/loadingSpinner.gif"
+                alt="loading indicator"
+              />
+            </div>
+          ) : (
+            <Scrollbars ref={scrollBar} autoHide={true}>
+              {messages &&
+                messages.map((message, index) => {
+                  if (index !== 0) {
+                    return (
+                      <Message
+                        key={message._id}
+                        message={message}
+                        lastSenderId={messages[index - 1].sender._id}
+                        nextMessage={messages[index + 1]}
+                      />
+                    );
+                  }
+                  return (
+                    <Message
+                      key={message._id}
+                      message={message}
+                      lastSenderId=""
+                      nextMessage={messages[index + 1]}
+                    />
+                  );
+                })}
+            </Scrollbars>
+          )}
         </div>
+        {isTyping && (
+          <div className="chat__typingIndicator">
+            <img src="/dots.gif" alt="typing indicator" />
+          </div>
+        )}
         <div className="chat__bottom">
           <textarea
             placeholder="Type a message..."
             onKeyDown={handleOnKeyDown}
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={(e) => {
+              updateTyping();
+              setMessage(e.target.value);
+            }}
           ></textarea>
           <SendIcon onClick={handleSendMessage} className="chat__sendButton" />
         </div>
