@@ -37,7 +37,8 @@ function Chat(props) {
   let remainingUsers = chat?.users?.length - maxImagesToShow ?? 0;
   remainingUsers -= 1; // removing our own image
   let currentUserTyping = false;
-  let timer;
+  const timerRef = useRef(null);
+
   const [openChangeChatNameDialog, setOpenChangeChatNameDialog] =
     useState(false);
   const [chatName, setChatName] = useState(chat?.chatName ?? "");
@@ -83,13 +84,12 @@ function Chat(props) {
     return namesArray.join(", ");
   };
   const updateTyping = () => {
-    clearTimeout(timer);
+    clearTimeout(timerRef.current);
     if (!currentUserTyping) {
       ws.typing(id);
       currentUserTyping = true;
     }
-    timer = setTimeout(() => {
-      console.log('set timeout called')
+    timerRef.current = setTimeout(() => {
       ws.stopTyping(id);
       currentUserTyping = false;
     }, 3000);

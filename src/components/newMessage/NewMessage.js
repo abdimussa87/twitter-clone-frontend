@@ -13,7 +13,8 @@ import "./NewMessage.css";
 function NewMessage() {
   const [nameOfReciever, setNameOfReciever] = useState("");
   //   const [timer, setTimer] = useState(0);
-  let timer;
+  const timerRef = useRef(null);
+
   const inputRef = useRef("");
   const [selectedUsers, setSelectedUsers] = useState([]);
   const dispatch = useDispatch();
@@ -31,9 +32,9 @@ function NewMessage() {
   };
 
   const handleOnInputChanged = (e) => {
-    clearTimeout(timer);
+    clearTimeout(timerRef.current);
     setNameOfReciever(e.target.value);
-    timer = setTimeout(() => {
+    timerRef.current = setTimeout(() => {
       if (e.target.value.length === 0) {
         dispatch(setUsersToEmtpy());
         return;
