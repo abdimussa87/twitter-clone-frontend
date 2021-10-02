@@ -67,14 +67,16 @@ export const updateChatAsync = createAsyncThunk(
 
 export const createMessageAsync = createAsyncThunk(
   "message/createMessageAsync",
-  async ({ content, chatId }, { rejectWithValue }) => {
+  async ({ content, chatId,ws }, { rejectWithValue }) => {
     try {
       const response = await axios.post("/messages", {
         content,
         chatId,
       });
       if (response.status === 201) {
+        console.log('Still getting called in the right place')
         const { data } = response.data;
+        ws.sendNewMessage(data)
         return { data };
       }
     } catch (error) {
@@ -97,6 +99,7 @@ export const getChatMessagesAsync = createAsyncThunk(
     }
   }
 );
+
 export const messageSlice = createSlice({
   name: "message",
   initialState: {
@@ -116,6 +119,9 @@ export const messageSlice = createSlice({
     },
     hideTypingIndicator :(state)=>{
       state.isTyping = false
+    },
+    newMessageReceived :(state,action)=>{
+      state.chats = [...state.chats, { ...action.payload }]
     },
   },
   extraReducers: {
@@ -196,6 +202,6 @@ export const messageSlice = createSlice({
     },
   },
 });
-export const { displayTypingIndicator,hideTypingIndicator } = messageSlice.actions;
+export const { displayTypingIndicator,hideTypingIndicator ,newMessageReceived} = messageSlice.actions;
 
 export default messageSlice.reducer;

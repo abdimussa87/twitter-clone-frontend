@@ -97,7 +97,9 @@ function Chat(props) {
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (message.trim().length > 0) {
-      dispatch(createMessageAsync({ content: message, chatId: chat._id }));
+      ws.stopTyping(id);
+      currentUserTyping = false;
+      dispatch(createMessageAsync({ content: message, chatId: chat._id ,ws}))
       setMessage("");
     }
   };
@@ -158,6 +160,8 @@ function Chat(props) {
       </Dialog>
     );
   };
+
+  console.log('ui building')
   return (
     <Grid container>
       <Grid item xs={2} sm={2} md={2} lg={2}>
