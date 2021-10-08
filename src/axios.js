@@ -1,7 +1,13 @@
 // import store from './app/store'
 import axios from 'axios'
+import { logout } from './features/auth/authSlice'
+
 const token = localStorage.getItem('token');
 
+let store
+export const injectStore = _store => {
+  store = _store
+}
 const instance = axios.create({
     baseURL: ' https://twitter-clone-abdi.herokuapp.com/api',
     headers: {
@@ -17,16 +23,15 @@ instance.interceptors.request.use(req => {
     return req;
 })
 
-//! do this when you figure out how to get the store then dispatch a logout
-//! action
-// instance.interceptors.response.use(
-//     response => response,
-//     error => {
-//         if (error.response.status === 500 && error.response.data.message.name === 'TokenExpiredError') {
-
-//             console.log('in error')
-//         }
-//     }
-// )
+instance.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.response.status === 401 && error.response.data.message.name === 'TokenExpiredError') {
+            store.dispatch(logout())
+            console.log('in error')
+        }
+        return Promise.reject(error);
+    }
+)
 
 export default instance;
