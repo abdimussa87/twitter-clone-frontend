@@ -7,6 +7,8 @@ import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 
 import WebSocketProvider  from './features/socket/webSocket';
+import {injectStore} from "./axios";
+injectStore(store);
 
 ReactDOM.render(
   <React.StrictMode>
