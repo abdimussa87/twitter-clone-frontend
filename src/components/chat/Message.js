@@ -14,7 +14,7 @@ function Message({ message, nextMessage, lastSenderId }) {
         <span className="message__senderName">{`${message.sender.firstName} ${message.sender.lastName}`}</span>
       )}
       <div className="message__outerContainer">
-      {!isMine && isLastMessage && <img alt='user profile' className='message__senderImage' src={`http://localhost:8080/${message.sender.profilePic}`} />}
+      {!isMine && isLastMessage && <img alt='user profile' className='message__senderImage' src={` https://twitter-clone-abdi.herokuapp.com/${message.sender.profilePic}`} />}
         <div
           className={`message__container  ${isMine ? "mine" : "their"} ${
             isFirstMessage ? "first" : ""

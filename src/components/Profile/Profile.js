@@ -48,7 +48,7 @@ function Profile(props) {
               <div className="profile__header">
                 <img
                   className="profile__headerImage"
-                  src={`http://localhost:8080/${user.profilePic}`}
+                  src={` https://twitter-clone-abdi.herokuapp.com/${user.profilePic}`}
                   alt="User profile"
                 />
               </div>

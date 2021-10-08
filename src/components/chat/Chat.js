@@ -66,7 +66,7 @@ function Chat(props) {
       <img
         key={user._id}
         alt="chat users"
-        src={`http://localhost:8080/${user.profilePic}`}
+        src={` https://twitter-clone-abdi.herokuapp.com/${user.profilePic}`}
       />
     );
   };

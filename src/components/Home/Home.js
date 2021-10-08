@@ -33,7 +33,7 @@ function Home() {
                     <h4 >Home</h4>
                 </div>
                 <div className="home__createPostContainer">
-                    <img src={`http://localhost:8080/${user?.profilePic}`} alt="User's profile " />
+                    <img src={` https://twitter-clone-abdi.herokuapp.com/${user?.profilePic}`} alt="User's profile " />
 
                     <div className="home__createPostContainer__right">
                         <textarea value={postMessage} onChange={(e) => setpostMessage(e.target.value)} placeholder="What's happening?" />

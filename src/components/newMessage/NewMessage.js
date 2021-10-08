@@ -108,7 +108,7 @@ function NewMessage() {
                         onClick={() => handleOnUserClicked(user)}
                       >
                         <Avatar
-                          src={`http://localhost:8080/${user.profilePic}`}
+                          src={` https://twitter-clone-abdi.herokuapp.com/${user.profilePic}`}
                         />
                         <Link to={`/profile/${user.username}`}>
                           {`${user.firstName} ${user.lastName} `}

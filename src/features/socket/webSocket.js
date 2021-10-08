@@ -28,7 +28,7 @@ export default function WebSocketProvider({ children }) {
     socket.emit("newMessage", newMessage);
   };
   if (!socket) {
-    socket = io.connect("http://localhost:8080");
+    socket = io.connect("https://twitter-clone-abdi.herokuapp.com");
 
     socket.on("typing", (msg) => {
       dispatch(displayTypingIndicator());

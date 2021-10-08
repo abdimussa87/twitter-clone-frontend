@@ -111,7 +111,7 @@ function Post({ post }) {
         <DialogTitle id="form-dialog-title">Reply</DialogTitle>
         <DialogContent className="reply">
           <div className="reply__topContainer">
-            <Avatar src={`http://localhost:8080/${profilePic}`} />
+            <Avatar src={` https://twitter-clone-abdi.herokuapp.com/${profilePic}`} />
             <div className="post__right">
               {pinned && <h6>Pinned Post</h6>}
               <span>
@@ -180,7 +180,7 @@ function Post({ post }) {
             </div>
           </div>
           <div className="reply__bottomContainer">
-            <Avatar src={`http://localhost:8080/${profilePic}`} />
+            <Avatar src={` https://twitter-clone-abdi.herokuapp.com/${profilePic}`} />
 
             <textarea
               ref={textAreaRef}
@@ -220,7 +220,7 @@ function Post({ post }) {
         <DialogTitle id="form-dialog-title">Delete Post</DialogTitle>
         <DialogContent className="deletePost">
           <div className="deletePost__topContainer">
-            <Avatar src={`http://localhost:8080/${profilePic}`} />
+            <Avatar src={` https://twitter-clone-abdi.herokuapp.com/${profilePic}`} />
             <div className="deletePostpost__right">
               <span>
                 <Link to={`/profile/${postedBy.username}`}>
@@ -262,7 +262,7 @@ function Post({ post }) {
         </span>
       )}
       <div className="post__mainContainer">
-        <Avatar src={`http://localhost:8080/${profilePic}`} />
+        <Avatar src={` https://twitter-clone-abdi.herokuapp.com/${profilePic}`} />
         <div className="post__right">
           {pinned && <h6>Pinned Post</h6>}
           <span>

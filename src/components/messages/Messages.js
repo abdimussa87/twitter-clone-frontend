@@ -68,14 +68,14 @@ function Messages() {
                 >
                   <img
                     alt="User profile"
-                    src={`http://localhost:8080/${
+                    src={` https://twitter-clone-abdi.herokuapp.com/${
                       getChatImage(chat).profilePic
                     }`}
                   />
                   {getOtherChatUsers(chat.users).length > 1 && (
                     <img
                       alt="User profile"
-                      src={`http://localhost:8080/${
+                      src={` https://twitter-clone-abdi.herokuapp.com/${
                         getOtherChatUsers(chat.users)[1].profilePic
                       }`}
                     />
