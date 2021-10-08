@@ -74,7 +74,7 @@ export const createMessageAsync = createAsyncThunk(
         chatId,
       });
       if (response.status === 201) {
-        console.log('Still getting called in the right place')
+       
         const { data } = response.data;
         ws.sendNewMessage(data)
         return { data };
@@ -175,7 +175,7 @@ export const messageSlice = createSlice({
       state.error = action.payload;
     },
     [createMessageAsync.pending]: (state, action) => {
-      state.loading = true;
+      // state.loading = true;
     },
     [createMessageAsync.fulfilled]: (state, action) => {
       state.loading = false;

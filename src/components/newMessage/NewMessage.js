@@ -39,7 +39,6 @@ function NewMessage() {
         dispatch(setUsersToEmtpy());
         return;
       }
-      console.log('search being called')
       dispatch(searchForUserAsync({ searchTerm: e.target.value }));
     }, 1000);
   };
